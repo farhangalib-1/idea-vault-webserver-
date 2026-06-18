@@ -16,7 +16,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     
-   // await client.connect();
+   //await client.connect();
    const db = client.db("idea-vault-backend")
    const collections = db.collection("collections");
    const comments = db.collection("comments");
@@ -55,7 +55,25 @@ async function run() {
       const result = await comments.deleteOne(query);
       res.send(result)
    })
-   //await client.db("admin").command({ ping: 1 });
+   app.patch("/comments/:id", async (req, res) => {
+  const id = req.params.id;
+  const { message } = req.body;
+
+  const result = await comments.updateOne(
+    {
+      _id: new ObjectId(id),
+    },
+    {
+      $set: {
+        message,
+        updatedAt: new Date(),
+      },
+    }
+  );
+
+  res.send(result);
+});
+   // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
