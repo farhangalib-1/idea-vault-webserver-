@@ -26,6 +26,11 @@ async function run() {
     const result = await cursor.toArray();
     res.send(result);
    })
+   app.post("/allcollections", async(req, res)=>{
+        const newIdea = req.body;
+        const result = await collections.insertOne(newIdea);
+        res.send(result);
+   })
 
    app.get("/allcollections/:id", async(req, res)=>{
     const id = req.params.id;
