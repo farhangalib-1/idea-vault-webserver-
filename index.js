@@ -40,7 +40,11 @@ async function run() {
     const result = await collections.findOne(query);
     res.send(result);
    })
-
+   app.get("/comments", async(req, res)=>{
+    const cursor = await comments.find();
+    const result = await cursor.toArray();
+    res.send(result)
+   })
    app.post("/comments", async(req, res)=>{
     const newComment = req.body;
     const result = await comments.insertOne(newComment);
